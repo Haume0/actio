@@ -5,9 +5,12 @@ import (
 	"regexp"
 )
 
-// TestRegex checks if the given text matches the provided regex pattern.
-// It returns true if the text matches the pattern, otherwise false.
-func RegexTest(text, pattern string) bool {
+// RegexpTest checks if the given text matches the specified regular expression pattern.
+//
+// Example Usage:
+//
+//	println(RegexpTest("hello123", "^[a-z]+[0-9]+$")) // true
+func RegexpTest(text, pattern string) bool {
 	// Compile the regular expression pattern
 	re, err := regexp.Compile(pattern)
 	if err != nil {
