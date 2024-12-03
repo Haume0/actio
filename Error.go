@@ -57,6 +57,18 @@ func Error(w http.ResponseWriter, message string, status int, lang ...string) {
 	w.Write(res)
 }
 
+// Example JSON Object
+/*
+"AUTH.BAD_REQUEST": {
+		    "Message": {
+		      "tr": "Geçersiz istek",
+		      "en": "Bad request",
+		      "ru": "Плохой запрос",
+		      "es": "Solicitud incorrecta"
+		    },
+		    "Status": 400
+		  }
+*/
 func ErrorInit(errorCodesPath string) {
 	file, err := os.Open(errorCodesPath)
 	if err != nil {
