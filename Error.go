@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var Codes map[string]ErrorCode
+var ErrorCodes map[string]ErrorCode
 var Languages = []string{"tr", "en"}
 
 type ErrorCode struct {
@@ -19,8 +19,8 @@ type errorResponse struct {
 }
 
 // FindCode finds the error code in the error codes map
-func FindCode(language, code string) (ErrorCode, bool) {
-	if errorCode, ok := Codes[code]; ok {
+func FindErrorCode(language, code string) (ErrorCode, bool) {
+	if errorCode, ok := ErrorCodes[code]; ok {
 		if message, ok := errorCode.Message[language]; ok {
 			return ErrorCode{
 				Message: map[string]string{language: message},
@@ -37,7 +37,7 @@ func Error(w http.ResponseWriter, message string, status int, lang ...string) {
 	if len(lang) > 0 {
 		language = lang[0]
 	}
-	errorCode, ok := FindCode(language, message)
+	errorCode, ok := FindErrorCode(language, message)
 	if ok {
 		message = errorCode.Message[language]
 		status = errorCode.Status
@@ -57,7 +57,7 @@ func Error(w http.ResponseWriter, message string, status int, lang ...string) {
 	w.Write(res)
 }
 
-func Init(errorCodesPath string) {
+func ErrorInit(errorCodesPath string) {
 	file, err := os.Open(errorCodesPath)
 	if err != nil {
 		panic("Error opening error codes file: " + err.Error())
@@ -65,7 +65,7 @@ func Init(errorCodesPath string) {
 	defer file.Close()
 
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&Codes)
+	err = decoder.Decode(&ErrorCodes)
 	if err != nil {
 		panic("Error decoding error codes: " + err.Error())
 	}
